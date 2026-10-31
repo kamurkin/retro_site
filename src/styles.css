@@ -712,3 +712,20 @@ a:active {
 .blink {
     animation: blink 1s infinite;
 }
+
+/* ===== Мобильная версия верхнего меню ===== */
+@media (max-width: 600px) {
+    .nav-menu {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .nav-item {
+        margin-left: 0;
+        padding: 4px 7px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+}
