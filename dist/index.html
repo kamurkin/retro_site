@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мой персональный сайт — Эпоха 2000-х</title>
+    <link rel="stylesheet" href="/styles-a5a5068430acf289.css" integrity="sha384-KJ4fqX9RLucvBtvIS9OQC90LcoewRqYpm0MVE+Fxy9VMQzLrybUFrnlzQtfXv4q4"/>
+  <link rel="modulepreload" href="/retro_site-fe99bcdc7ddba1c4.js" crossorigin="anonymous" integrity="sha384-kFKxaJuC2xW3fNq754U2g7nm3kZFiGrOKHYs7fsGoHqLHRFG4jrT2z54k6uhX6Nx"><link rel="preload" href="/retro_site-5c016749a8fced4c_bg.wasm" crossorigin="anonymous" integrity="sha384-uAmjxjvBi3o3/Qvi5AdNT+LBYenfU2aRX64YLbF57yOdnna2X+iKVw+DU94Ydd9W" as="fetch" type="application/wasm"></head>
+  <body>
+    <div id="leptos"></div>
+    
+<script type="module">
+import init, * as bindings from '/retro_site-fe99bcdc7ddba1c4.js';
+const wasm = await init({ module_or_path: '/retro_site-5c016749a8fced4c_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  </body>
+</html>
