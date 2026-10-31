@@ -4,7 +4,8 @@ use wasm_bindgen::{JsCast, JsValue};
 use wasm_bindgen_futures::{JsFuture, spawn_local};
 use web_sys::{Response, console};
 
-const TOTAL_COUNT_URL: &str = "https://kamurkin.goatcounter.com/counter/TOTAL.json";
+const COUNTER_URL: &str = "https://kamurkin.goatcounter.com/counter/";
+const PAGE_PATHS: [&str; 5] = ["/", "/about", "/projects", "/guestbook", "/contacts"];
 
 pub fn load_total_count(visitor_count: RwSignal<String>) {
     spawn_local(async move {
@@ -20,10 +21,25 @@ pub fn load_total_count(visitor_count: RwSignal<String>) {
 }
 
 async fn fetch_total_count() -> Result<String, JsValue> {
+    let mut total = 0u64;
+    for path in PAGE_PATHS {
+        total += fetch_path_count(path).await?;
+    }
+
+    Ok(format!("{total:06}"))
+}
+
+async fn fetch_path_count(path: &str) -> Result<u64, JsValue> {
     let window = web_sys::window().ok_or_else(|| JsValue::from_str("Window is unavailable"))?;
-    let response: Response = JsFuture::from(window.fetch_with_str(TOTAL_COUNT_URL))
+    let encoded_path = path.replace('/', "%2F");
+    let url = format!("{COUNTER_URL}{encoded_path}.json");
+    let response: Response = JsFuture::from(window.fetch_with_str(&url))
         .await?
         .dyn_into()?;
+
+    if response.status() == 404 {
+        return Ok(0);
+    }
 
     if !response.ok() {
         return Err(JsValue::from_str(&format!(
@@ -37,10 +53,14 @@ async fn fetch_total_count() -> Result<String, JsValue> {
         .as_string()
         .ok_or_else(|| JsValue::from_str("GoatCounter response has no string count"))?;
     let count = count
+        .chars()
+        .filter(char::is_ascii_digit)
+        .collect::<String>();
+    let count = count
         .parse::<u64>()
         .map_err(|_| JsValue::from_str("GoatCounter returned an invalid count"))?;
 
-    Ok(format!("{count:06}"))
+    Ok(count)
 }
 
 pub fn track_pageview(path: &str) {
