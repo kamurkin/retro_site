@@ -14,7 +14,6 @@ body {
     margin: 0;
     padding: 0;
     color: #000000;
-    overflow-x: hidden;
 }
 
 a {
@@ -153,10 +152,77 @@ a:active {
     box-shadow: 4px 4px 0px #808080;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 601px) and (max-width: 900px) {
+    .header-bar {
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .site-title {
+        font-size: clamp(20px, 3.2vw, 26px);
+        white-space: nowrap;
+    }
+
+    .nav-menu {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .nav-item {
+        margin-left: 0;
+    }
+
+    .main-layout {
+        align-items: flex-start;
+    }
+
+    .sidebar {
+        width: clamp(150px, 24vw, 205px);
+    }
+
+    .content {
+        min-width: 0;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-bar {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .site-title {
+        font-size: clamp(17px, 5vw, 24px);
+        letter-spacing: clamp(0px, 0.15vw, 1px);
+        white-space: nowrap;
+    }
+
+    .nav-menu {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .nav-item {
+        margin-left: 0;
+        padding: 4px 7px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
     .main-layout {
         flex-direction: column;
     }
+
     .sidebar {
         width: 100%;
     }
@@ -711,21 +777,4 @@ a:active {
 
 .blink {
     animation: blink 1s infinite;
-}
-
-/* ===== Мобильная версия верхнего меню ===== */
-@media (max-width: 600px) {
-    .nav-menu {
-        width: 100%;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 4px;
-    }
-
-    .nav-item {
-        margin-left: 0;
-        padding: 4px 7px;
-        font-size: 11px;
-        white-space: nowrap;
-    }
 }
