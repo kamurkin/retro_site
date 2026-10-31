@@ -3,7 +3,7 @@ use leptos::*;
 #[component]
 pub fn Header(
     current_page: Signal<String>,
-    set_current_page: WriteSignal<String>,
+    on_navigate: Callback<String>,
 ) -> impl IntoView {
     let nav_items = vec![
         ("Home", "home"),
@@ -20,7 +20,7 @@ pub fn Header(
                 {nav_items
                     .into_iter()
                     .map(|(label, page)| {
-                        let set_page = set_current_page.clone();
+                        let on_navigate = on_navigate.clone();
                         let page = page.to_string();
                         let label = label.to_string();
                         let page_for_class = page.clone();
@@ -34,8 +34,9 @@ pub fn Header(
                                         "nav-item"
                                     }
                                 }
-                                on:click=move |_| {
-                                    set_page.set(page.clone());
+                                on:click=move |ev| {
+                                    ev.prevent_default();
+                                    on_navigate.call(page.clone());
                                 }
                             >
                                 {label}

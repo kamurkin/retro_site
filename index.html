@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Мой персональный сайт — Эпоха 2000-х</title>
     <link data-trunk rel="css" href="src/styles.css" />
+    <script>
+      window.goatcounter = { no_onload: true };
+      window.goatcounterQueue = [];
+      window.queueGoatCounter = function (path) {
+        var count = window.goatcounter.count;
+        if (typeof count === "function") {
+          count({ path: path });
+        } else {
+          window.goatcounterQueue.push(path);
+        }
+      };
+      window.flushGoatCounterQueue = function () {
+        var count = window.goatcounter.count;
+        if (typeof count !== "function") return;
+        window.goatcounterQueue.splice(0).forEach(function (path) {
+          count({ path: path });
+        });
+      };
+    </script>
+    <script
+      data-goatcounter="https://kamurkin.goatcounter.com/count"
+      async
+      src="https://gc.zgo.at/count.js"
+      onload="window.flushGoatCounterQueue()"
+    ></script>
   </head>
   <body>
     <div id="leptos"></div>

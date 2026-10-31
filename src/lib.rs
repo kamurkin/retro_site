@@ -4,6 +4,7 @@ use wasm_bindgen::prelude::*;
 
 pub mod app;
 pub mod components;
+mod analytics;
 
 pub use app::App;
 

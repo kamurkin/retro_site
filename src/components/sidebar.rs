@@ -3,7 +3,8 @@ use leptos::*;
 #[component]
 pub fn Sidebar(
     current_page: Signal<String>,
-    set_current_page: WriteSignal<String>,
+    on_navigate: Callback<String>,
+    visitor_count: RwSignal<String>,
 ) -> impl IntoView {
     let nav_items = vec![
         ("Home", "home"),
@@ -20,7 +21,7 @@ pub fn Sidebar(
                 {nav_items
                     .into_iter()
                     .map(|(label, page)| {
-                        let set_page = set_current_page.clone();
+                        let on_navigate = on_navigate.clone();
                         let page = page.to_string();
                         let label = label.to_string();
                         let page_for_class = page.clone();
@@ -35,8 +36,9 @@ pub fn Sidebar(
                                             "sidebar-item"
                                         }
                                     }
-                                    on:click=move |_| {
-                                        set_page.set(page.clone());
+                                    on:click=move |ev| {
+                                        ev.prevent_default();
+                                        on_navigate.call(page.clone());
                                     }
                                 >
                                     {label}
@@ -60,7 +62,7 @@ pub fn Sidebar(
                 <div class="sidebar-box-title">"Site Stats"</div>
                 <div class="stat-item">
                     <span class="stat-label">"Visits:"</span>
-                    <span class="stat-value">"1,452"</span>
+                    <span class="stat-value">{move || visitor_count.get()}</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">"Online:"</span>

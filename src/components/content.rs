@@ -5,7 +5,7 @@ use crate::{app::GuestbookEntry, components::Guestbook};
 pub fn Content(
     current_page: Signal<String>,
     guestbook_entries: RwSignal<Vec<GuestbookEntry>>,
-    visitor_count: RwSignal<u32>,
+    visitor_count: RwSignal<String>,
 ) -> impl IntoView {
     view! {
         <div class="content">
@@ -102,7 +102,7 @@ fn ContactsPage() -> impl IntoView {
 }
 
 #[component]
-fn HomePage(visitor_count: RwSignal<u32>) -> impl IntoView {
+fn HomePage(visitor_count: RwSignal<String>) -> impl IntoView {
     view! {
         <div class="welcome-section">
             <h1 class="welcome-title">"Welcome to my website!"</h1>
@@ -146,7 +146,7 @@ fn HomePage(visitor_count: RwSignal<u32>) -> impl IntoView {
             <div class="counter-box">
                 <div class="counter-label">"Счётчик посещений:"</div>
                 <div class="counter-value">
-                    {move || format!("{:06}", visitor_count.get())}
+                    {move || visitor_count.get()}
                 </div>
             </div>
         </div>

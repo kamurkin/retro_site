@@ -1,26 +1,43 @@
 use leptos::*;
 use crate::components::{Content, Footer, Header, Sidebar};
+use crate::analytics::{load_total_count, track_pageview};
 
 #[component]
 pub fn App() -> impl IntoView {
     let (current_page, set_current_page) = create_signal("home".to_string());
+    let visitor_count = create_rw_signal("------".to_string());
+    load_total_count(visitor_count);
+    track_pageview("/");
+
+    let on_navigate = Callback::new({
+        let current_page = current_page;
+        let set_current_page = set_current_page;
+        move |page: String| {
+            if current_page.get_untracked() != page {
+                set_current_page.set(page.clone());
+                let path = if page == "home" {
+                    "/".to_string()
+                } else {
+                    format!("/{page}")
+                };
+                track_pageview(&path);
+            }
+        }
+    });
     let current_page = current_page.into();
     let guestbook_entries = create_rw_signal(Vec::<GuestbookEntry>::new());
-    let visitor_count = create_rw_signal(1452u32);
-
-    // Имитация увеличения счётчика при загрузке
-    let _ = visitor_count.update(|n| *n += 1);
 
     view! {
         <div class="retro-container">
             <Header
                 current_page=current_page
-                set_current_page=set_current_page
+                on_navigate=on_navigate
             />
             <div class="main-layout">
                 <Sidebar
                     current_page=current_page
-                    set_current_page=set_current_page
+                    on_navigate=on_navigate
+                    visitor_count=visitor_count
                 />
                 <Content
                     current_page=current_page
