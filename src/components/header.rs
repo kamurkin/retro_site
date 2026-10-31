@@ -13,14 +13,6 @@ pub fn Header(
         ("Contacts", "contacts"),
     ];
 
-    let active_class = move |page: &str| {
-        if current_page.get() == page {
-            "nav-item active"
-        } else {
-            "nav-item"
-        }
-    };
-
     view! {
         <div class="header-bar">
             <div class="site-title">"★ MY RETRO WEBSITE ★"</div>
@@ -31,11 +23,17 @@ pub fn Header(
                         let set_page = set_current_page.clone();
                         let page = page.to_string();
                         let label = label.to_string();
-                        let cls = active_class(&page);
+                        let page_for_class = page.clone();
                         view! {
                             <a
                                 href="#"
-                                class=cls
+                                class=move || {
+                                    if current_page.get() == page_for_class {
+                                        "nav-item active"
+                                    } else {
+                                        "nav-item"
+                                    }
+                                }
                                 on:click=move |_| {
                                     set_page.set(page.clone());
                                 }

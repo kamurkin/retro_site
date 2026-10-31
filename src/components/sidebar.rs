@@ -13,14 +13,6 @@ pub fn Sidebar(
         ("Contacts", "contacts"),
     ];
 
-    let active_class = move |page: &str| {
-        if current_page.get() == page {
-            "sidebar-item active"
-        } else {
-            "sidebar-item"
-        }
-    };
-
     view! {
         <div class="sidebar">
             <div class="sidebar-title">"Navigation"</div>
@@ -31,12 +23,18 @@ pub fn Sidebar(
                         let set_page = set_current_page.clone();
                         let page = page.to_string();
                         let label = label.to_string();
-                        let cls = active_class(&page);
+                        let page_for_class = page.clone();
                         view! {
                             <li>
                                 <a
                                     href="#"
-                                    class=cls
+                                    class=move || {
+                                        if current_page.get() == page_for_class {
+                                            "sidebar-item active"
+                                        } else {
+                                            "sidebar-item"
+                                        }
+                                    }
                                     on:click=move |_| {
                                         set_page.set(page.clone());
                                     }
